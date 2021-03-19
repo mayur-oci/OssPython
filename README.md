@@ -17,8 +17,8 @@ pip install oci
 7. Make sure you have [SDK and CLI Configuration File](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdkconfig.htm#SDK_and_CLI_Configuration_File) setup. For production, you should use [Instance Principle Authentication](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/callingservicesfrominstances.htm).
 
 ## Producing messages to OSS
-1. Open your favorite editor, such as [Visual Studio Code](https://code.visualstudio.com) from the directory *wd*. You should already have oci-sdk packages for JavaScript installed in this directory(as per the *step 5 of Prerequisites* section ).
-2. Create new file named *Producer.js* in this directory and paste the following code in it.
+1. Open your favorite editor, such as [Visual Studio Code](https://code.visualstudio.com) from the directory *wd*. You should already have oci-sdk packages for Python installed for your current python environment (as per the *step 5 of Prerequisites* section).
+2. Create new file named *Producer.py* in this directory and paste the following code in it.
 ```Python
 import oci  
   
@@ -67,88 +67,11 @@ produce_messages(stream_client, ociStreamOcid)
  
  You can produce multiple test messages by clicking *Produce* button back to back, as shown below
 ![Produce multiple test message by clicking Produce button](https://github.com/mayur-oci/OssJs/blob/main/JavaScript/ActualProduceMessagePopUp.png?raw=true)
-2. Open your favorite editor, such as [Visual Studio Code](https://code.visualstudio.com) from the directory *wd*. You should already have oci-sdk packages for JavaScript installed in this directory(as per the *step 5 of Prerequisites* section ).
-3. Create new file named *Consumer.js* in this directory and paste the following code in it.
-```JavaScript
-const common = require("oci-common");
-const st = require("oci-streaming"); // OCI SDK package for OSS
-
-const ociConfigFile = "YOUR_OCI_CONFGI_FILE_PATH";
-const ociProfileName = "YOUR_OCI_PROFILE_FOR_USER_WHO_CREATED_THE_STREAM";
-const ociMessageEndpointForStream = "MESSAGE_ENDPOINT_FROM_STREAM_CREATION_STEP";
-const ociStreamOcid = "OCID_FOR_THE_STREAM_YOU_CREATED";
-
-// provide authentication for OCI and OSS
-const provider = new common.ConfigFileAuthenticationDetailsProvider(ociConfigFile, ociProfileName);
+2. Open your favorite editor, such as [Visual Studio Code](https://code.visualstudio.com) from the directory *wd*. You should already have oci-sdk packages for Python installed for your current python environment as per the *step 5 of Prerequisites* section).
+3. Create new file named *Consumer.py* in this directory and paste the following code in it.
+```Python
   
-const consumerGroupName = "exampleGroup";
-const consumerGroupInstanceName = "exampleInstance-1";
-
-async function main() {
-  // OSS client to produce and consume messages from a Stream in OSS
-  const client = new st.StreamClient({ authenticationDetailsProvider: provider });
-  client.endpoint = ociMessageEndpointForStream;
-
-  // A cursor can be created as part of a consumer group.
-  // Committed offsets are managed for the group, and partitions
-  // are dynamically balanced amongst consumers in the group.
-  console.log("Starting a simple message loop with a group cursor");
-  const groupCursor = await getCursorByGroup(client, ociStreamOcid, consumerGroupName, consumerGroupInstanceName);
-  await consumerMsgLoop(client, ociStreamOcid, groupCursor);
-}
-
-main().catch((err) => {
-    console.log("Error occurred: ", err);
-}); 
-
-async function consumerMsgLoop(client, streamId, initialCursor) {
-    let cursor = initialCursor;
-    for (var i = 0; i < 10; i++) {
-      const getRequest = {
-        streamId: streamId,
-        cursor: cursor,
-        limit: 2
-      };
-      const response = await client.getMessages(getRequest);
-      console.log("Read %s messages.", response.items.length);
-      for (var message of response.items) {
-        if (message.key !== null)  {         
-            console.log("%s: %s",
-            Buffer.from(message.key, "base64").toString(),
-            Buffer.from(message.value, "base64").toString());
-        }
-       else{
-            console.log("Null: %s",
-                Buffer.from(message.value, "base64").toString() );
-       }
-      }
-      // getMessages is a throttled method; clients should retrieve sufficiently large message
-      // batches, as to avoid too many http requests.
-      await delay(2);
-      cursor = response.opcNextCursor;
-    }
-  }
   
-
-async function getCursorByGroup(client, streamId, groupName, instanceName) {
-    console.log("Creating a cursor for group %s, instance %s.", groupName, instanceName);
-    const cursorDetails = {
-      groupName: groupName,
-      instanceName: instanceName,
-      type: st.models.CreateGroupCursorDetails.Type.TrimHorizon,
-      commitOnGet: true
-    };
-    const createCursorRequest = {
-      createGroupCursorDetails: cursorDetails,
-      streamId: streamId
-    };
-    const response = await client.createGroupCursor(createCursorRequest);
-    return response.cursor.value;
-}
-
-async function delay(s) {
-    return new Promise(resolve => setTimeout(resolve, s * 1000));
-}
 ```
 4. Run the code on the terminal(from the same directory *wd*) follows 
 ```
