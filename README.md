@@ -1,6 +1,6 @@
 
 
-# Quickstart with OCI JavaScript SDK for OSS
+# Quickstart with OCI Python SDK for OSS
 
 This quickstart shows how to produce messages to and consume messages from an [**Oracle Streaming Service**](https://docs.oracle.com/en-us/iaas/Content/Streaming/Concepts/streamingoverview.htm) using the [OCI Python SDK](https://github.com/oracle/oci-python-sdk).
 
