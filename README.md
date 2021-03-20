@@ -12,9 +12,9 @@ This quickstart shows how to produce messages to and consume messages from an [*
 4. Visual Studio Code(recommended) or any other integrated development environment (IDE).
 5.  Install oci-sdk packages for Python as follows. 
 ```
-pip install oci
+  pip install oci
 ```
-For details, follow guide for [OCI Python SDK](https://github.com/oracle/oci-python-sdk#installation).
+It is highly recommended that a *Python virtual environment* be used when installing oci. 
 6. Make sure you have [SDK and CLI Configuration File](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdkconfig.htm#SDK_and_CLI_Configuration_File) setup. For production, you should use [Instance Principle Authentication](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/callingservicesfrominstances.htm).
 
 ## Producing messages to OSS
