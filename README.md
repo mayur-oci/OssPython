@@ -10,10 +10,11 @@ This quickstart shows how to produce messages to and consume messages from an [*
 2. Follow [these steps](https://github.com/mayur-oci/OssJs/blob/main/JavaScript/CreateStream.md) to create Streampool and Stream in OCI. If you do  already have stream created, refer step 3 [here](https://github.com/mayur-oci/OssJs/blob/main/JavaScript/CreateStream.md) to capture/record message endpoint and OCID of the stream. We need this Information for upcoming steps.
 3. Python 3.6 or later, with PIP installed and updated.
 4. Visual Studio Code(recommended) or any other integrated development environment (IDE).
-5. Follow installation guide for [OCI Python SDK](https://github.com/oracle/oci-python-sdk#installation). As per this guide, you will install oci-sdk packages for Python as follows
+5.  Install oci-sdk packages for Python as follows. 
 ```
 pip install oci
 ```
+For details, follow guide for [OCI Python SDK](https://github.com/oracle/oci-python-sdk#installation).
 7. Make sure you have [SDK and CLI Configuration File](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdkconfig.htm#SDK_and_CLI_Configuration_File) setup. For production, you should use [Instance Principle Authentication](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/callingservicesfrominstances.htm).
 
 ## Producing messages to OSS
