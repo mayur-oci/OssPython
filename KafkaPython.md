@@ -18,28 +18,32 @@ You can install it globally, or within a [virtualenv](https://docs.python.org/3/
 *librdkafka* pakcage is used by above *confluent-kafka* package and it is embedded in wheels for latest release of *confluent-kafka*. For more detail refer [here](https://github.com/confluentinc/confluent-kafka-python/blob/master/README.md#prerequisites).
 
 6. You need to install the CA root certificates on your host(where you are going developing and running this quickstart). The client will use CA certificates to verify the broker's certificate. For all platforms exept Windows, please follow [here](https://docs.confluent.io/platform/current/tutorials/examples/clients/docs/python.html#configure-ssl-trust-store). For [Windows](https://docs.confluent.io/platform/current/tutorials/examples/clients/docs/csharp.html#prerequisites), please download `cacert.pem` file distributed with curl ([download cacert.pm](https://curl.haxx.se/ca/cacert.pem)). 
-7.  Authentication with the Kafka protocol uses auth-tokens and the SASL/PLAIN mechanism. Follow  [Working with Auth Tokens](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/managingcredentials.htm#Working)  for auth-token generation. Since you have created the stream(aka Kafka Topic) and Streampool in OCI, you are already authorized to use this stream as per OCI IAM. Hence create auth-token for your user in OCI. These  `OCI user auth-tokens`  are visible only once at the time of creation. Hence please copy it and keep it somewhere safe, as we are going to need it later.
+
+8.  Authentication with the Kafka protocol uses auth-tokens and the SASL/PLAIN mechanism. Follow  [Working with Auth Tokens](https://docs.oracle.com/en-us/iaas/Content/Identity/Tasks/managingcredentials.htm#Working)  for auth-token generation. Since you have created the stream(aka Kafka Topic) and Streampool in OCI, you are already authorized to use this stream as per OCI IAM. Hence create auth-token for your user in OCI. These  `OCI user auth-tokens`  are visible only once at the time of creation. Hence please copy it and keep it somewhere safe, as we are going to need it later.
 
 ## Producing messages to OSS
 1. Open your favorite editor, such as [Visual Studio Code](https://code.visualstudio.com) from the directory *wd*. You should already have oci-sdk packages for Python installed for your current python environment (as per the *step 5 of Prerequisites* section).
 2. Create new file named *Producer.py* in this directory and paste the following code in it.
 ```Python
-
-import certifi  
+ 
 from confluent_kafka import Producer, KafkaError  
   
 if __name__ == '__main__':  
   
     # Read arguments and configurations and initialize  
-  topic = "StreamExample"  
+  topic = "[YOUR_STREAM_NAME]"  
   conf = {  
         'bootstrap.servers': 'cell-1.streaming.ap-mumbai-1.oci.oraclecloud.com:9092', # replace  
   'security.protocol': 'SASL_SSL',  
-  'ssl.ca.location': certifi.where(), # replace '/usr/local/etc/openssl@1.1/cert.pem'  
+  
+  'ssl.ca.location': '/path/on/your/host/to/your/cert.pem/'  # from step 6 of Prerequisites section
+    # optionally you can do 1. pip install certifi and 2. import certifi
+    # ssl.ca.location: certifi.where()
+  
   'sasl.mechanism': 'PLAIN',  
-  'sasl.username': 'intrandallbarnes/mayur.raleraskar@oracle.com/ocid1.streampool.oc1.ap-mumbai-1.amaaaaaauwpiejqaf6bqruy7ljuhfrtppqf5jyy22g5yu4cqfzg2ik5uqu6q',  
-  'sasl.password': '2m{s4WTCXysp:o]tGx4K', # replace  
- # 'client.id': 'python-example-producer'  }  
+  'sasl.username': '[TENANCY_NAME]/[YOUR_OCI_USERNAME]/[OCID_FOR_STREAMPOOL]',  # from step 2 of Prerequisites section
+  'sasl.password': '[YOUR_OCI_AUTH_TOKEN]',  # from step 8 of Prerequisites section
+   }  
   
     # Create Producer instance  
   producer = Producer(**conf)  
