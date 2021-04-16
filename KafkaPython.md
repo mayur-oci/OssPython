@@ -33,7 +33,7 @@ if __name__ == '__main__':
     # Read arguments and configurations and initialize  
   topic = "[YOUR_STREAM_NAME]"  
   conf = {  
-        'bootstrap.servers': "[end point of the bootstrap servers]", #usually of the form cell-1.streaming.[region code].oci.oraclecloud.com:9092  
+  'bootstrap.servers': "[end point of the bootstrap servers]", #usually of the form cell-1.streaming.[region code].oci.oraclecloud.com:9092  
   'security.protocol': 'SASL_SSL',  
   
   'ssl.ca.location': '/path/on/your/host/to/your/cert.pem/'  # from step 6 of Prerequisites section
@@ -45,12 +45,12 @@ if __name__ == '__main__':
   'sasl.password': '[YOUR_OCI_AUTH_TOKEN]',  # from step 8 of Prerequisites section
    }  
   
-    # Create Producer instance  
+  # Create Producer instance  
   producer = Producer(**conf)  
-    delivered_records = 0  
+  delivered_records = 0  
   
-  # Optional per-message on_delivery handler (triggered by poll() or flush())  
- # when a message has been successfully delivered or permanently failed delivery after retries.  def acked(err, msg):  
+# Optional per-message on_delivery handler (triggered by poll() or flush())  
+# when a message has been successfully delivered or permanently failed delivery after retries.  def acked(err, msg):  
         global delivered_records  
         """Delivery report handler called on  
  successful or failed delivery of message """  if err is not None:  
