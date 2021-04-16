@@ -120,7 +120,6 @@ if __name__ == '__main__':
     consumer.subscribe([topic])
 
     # Process messages
-    total_count = 0
     try:
         while True:
             msg = consumer.poll(1.0)
