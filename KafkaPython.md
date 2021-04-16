@@ -89,11 +89,8 @@ python Producer.py
 2. Open your favorite editor, such as [Visual Studio Code](https://code.visualstudio.com) from the directory *wd*. You should already have oci-sdk packages for Python installed for your current python environment as per the *step 5 of Prerequisites* section).
 3. Create new file named *Consumer.py* in this directory and paste the following code in it.
 ```Python
-#!/usr/bin/env python
-
 
 from confluent_kafka import Consumer
-import json
 
 
 if __name__ == '__main__':
