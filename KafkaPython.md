@@ -33,7 +33,7 @@ if __name__ == '__main__':
     # Read arguments and configurations and initialize  
   topic = "[YOUR_STREAM_NAME]"  
   conf = {  
-        'bootstrap.servers': 'cell-1.streaming.ap-mumbai-1.oci.oraclecloud.com:9092', # replace  
+        'bootstrap.servers': "[end point of the bootstrap servers]", #usually of the form cell-1.streaming.[region code].oci.oraclecloud.com:9092  
   'security.protocol': 'SASL_SSL',  
   
   'ssl.ca.location': '/path/on/your/host/to/your/cert.pem/'  # from step 6 of Prerequisites section
