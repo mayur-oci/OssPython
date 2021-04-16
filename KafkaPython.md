@@ -41,7 +41,7 @@ if __name__ == '__main__':
   
     'sasl.mechanism': 'PLAIN',  
     'sasl.username': '[TENANCY_NAME]/[YOUR_OCI_USERNAME]/[OCID_FOR_STREAMPOOL]',  # from step 2 of Prerequisites section
-    'sasl.password': '[YOUR_OCI_AUTH_TOKEN]',  # from step 8 of Prerequisites section
+    'sasl.password': '[YOUR_OCI_AUTH_TOKEN]',  # from step 7 of Prerequisites section
    }  
   
    # Create Producer instance  
@@ -106,7 +106,7 @@ if __name__ == '__main__':
   
     'sasl.mechanism': 'PLAIN',  
     'sasl.username': '[TENANCY_NAME]/[YOUR_OCI_USERNAME]/[OCID_FOR_STREAMPOOL]',  # from step 2 of Prerequisites section
-    'sasl.password': '[YOUR_OCI_AUTH_TOKEN]',  # from step 8 of Prerequisites section
+    'sasl.password': '[YOUR_OCI_AUTH_TOKEN]',  # from step 7 of Prerequisites section
     'group.id': 'python-example-group',
     'client.id': 'python-example-group-client',
     'default.topic.config': {'auto.offset.reset': 'smallest'}
