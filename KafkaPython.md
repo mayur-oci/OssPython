@@ -30,7 +30,6 @@ from confluent_kafka import Producer, KafkaError
   
 if __name__ == '__main__':  
   
-    # Read arguments and configurations and initialize  
   topic = "[YOUR_STREAM_NAME]"  
   conf = {  
     'bootstrap.servers': "[end point of the bootstrap servers]", #usually of the form cell-1.streaming.[region code].oci.oraclecloud.com:9092  
@@ -90,62 +89,65 @@ python Producer.py
 2. Open your favorite editor, such as [Visual Studio Code](https://code.visualstudio.com) from the directory *wd*. You should already have oci-sdk packages for Python installed for your current python environment as per the *step 5 of Prerequisites* section).
 3. Create new file named *Consumer.py* in this directory and paste the following code in it.
 ```Python
-import oci
-import time
-
-from base64 import b64decode
-
-ociMessageEndpoint = "https://cell-1.streaming.ap-mumbai-1.oci.oraclecloud.com"
-ociStreamOcid = "ocid1.stream.oc1.ap-mumbai-1.amaaaaaauwpiejqaxcfc2ht67wwohfg7mxcstfkh2kp3hweeenb3zxtr5khq"
-ociConfigFilePath = "~/.oci/config"
-ociProfileName = "DEFAULT"
-compartment = ""
+#!/usr/bin/env python
 
 
-def get_cursor_by_group(sc, sid, group_name, instance_name):
-    print(" Creating a cursor for group {}, instance {}".format(group_name, instance_name))
-    cursor_details = oci.streaming.models.CreateGroupCursorDetails(group_name=group_name, instance_name=instance_name,
-                                                                   type=oci.streaming.models.
-                                                                   CreateGroupCursorDetails.TYPE_TRIM_HORIZON,
-                                                                   commit_on_get=True)
-    response = sc.create_group_cursor(sid, cursor_details)
-    return response.data.value
+from confluent_kafka import Consumer
+import json
 
-def simple_message_loop(client, stream_id, initial_cursor):
-    cursor = initial_cursor
-    while True:
-        get_response = client.get_messages(stream_id, cursor, limit=10)
-        # No messages to process. return.
-        if not get_response.data:
-            return
 
-        # Process the messages
-        print(" Read {} messages".format(len(get_response.data)))
-        for message in get_response.data:
-            if message.key is None:
-                key = "Null"
+if __name__ == '__main__':
+
+  topic = "[YOUR_STREAM_NAME]"  
+  conf = {  
+    'bootstrap.servers': "[end point of the bootstrap servers]", #usually of the form cell-1.streaming.[region code].oci.oraclecloud.com:9092  
+    'security.protocol': 'SASL_SSL',  
+  
+    'ssl.ca.location': '/path/on/your/host/to/your/cert.pem/'  # from step 6 of Prerequisites section
+     # optionally you can do 1. pip install certifi and 2. import certifi
+     # ssl.ca.location: certifi.where()
+  
+    'sasl.mechanism': 'PLAIN',  
+    'sasl.username': '[TENANCY_NAME]/[YOUR_OCI_USERNAME]/[OCID_FOR_STREAMPOOL]',  # from step 2 of Prerequisites section
+    'sasl.password': '[YOUR_OCI_AUTH_TOKEN]',  # from step 8 of Prerequisites section
+    'group.id': 'python-example-group',
+    'client.id': 'python-example-group-client',
+    'default.topic.config': {'auto.offset.reset': 'smallest'}
+    }
+
+    # Create Consumer instance
+    consumer = Consumer(conf)
+
+    # Subscribe to topic
+    consumer.subscribe([topic])
+
+    # Process messages
+    total_count = 0
+    try:
+        while True:
+            msg = consumer.poll(1.0)
+            if msg is None:
+                # No message available within timeout.
+                # Initial message consumption may take up to
+                # `session.timeout.ms` for the consumer group to
+                # rebalance and start consuming
+                print("Waiting for message or event/error in poll()")
+                continue
+            elif msg.error():
+                print('error: {}'.format(msg.error()))
             else:
-                key = b64decode(message.key.encode()).decode()
-            print("{}: {}".format(key,
-                                  b64decode(message.value.encode()).decode()))
-
-        # get_messages is a throttled method; clients should retrieve sufficiently large message
-        # batches, as to avoid too many http requests.
-        time.sleep(1)
-        # use the next-cursor for iteration
-        cursor = get_response.headers["opc-next-cursor"]
-
-
-config = oci.config.from_file(ociConfigFilePath, ociProfileName)
-stream_client = oci.streaming.StreamClient(config, service_endpoint=ociMessageEndpoint)
-
-# A cursor can be created as part of a consumer group.
-# Committed offsets are managed for the group, and partitions
-# are dynamically balanced amongst consumers in the group.
-group_cursor = get_cursor_by_group(stream_client, ociStreamOcid, "example-group", "example-instance-1")
-simple_message_loop(stream_client, ociStreamOcid, group_cursor)
+                # Check for Kafka message
+                record_key = "Null" if msg.key() is None else msg.key().decode('utf-8')
+                record_value = msg.value().decode('utf-8')
+                print("Consumed record with key "+ record_key + " and value " + record_value)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        # Leave group and commit final offsets
+        consumer.close()
 
 ```
+
 4. Run the code on the terminal(from the same directory *wd*) follows 
 ```
 python Consumer.py
