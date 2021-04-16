@@ -7,7 +7,7 @@ This quickstart shows how to produce messages to and consume messages from an [*
 ## Prerequisites
 
 1. You need have [OCI account subscription or free account](https://www.oracle.com/cloud/free/). 
-2. Follow  [these steps](https://github.com/mayur-oci/OssJs/blob/main/JavaScript/CreateStream.md)  to create Streampool and Stream in OCI. If you do already have stream created, refer step 4  [here](https://github.com/mayur-oci/OssJs/blob/main/JavaScript/CreateStream.md)  to capture information related to  `Kafka Connection Settings`. We need this Information for upcoming steps.
+2. Follow  [these steps](https://github.com/mayur-oci/OssJs/blob/main/JavaScript/CreateStream.md)  to create Streampool and Stream in OCI. If you do already have stream created, refer step 4 [here](https://github.com/mayur-oci/OssJs/blob/main/JavaScript/CreateStream.md)  to capture information related to  `Kafka Connection Settings`. We need this Information for upcoming steps.
 3. Python 3.6 or later, with PIP installed and updated.
 4. Visual Studio Code(recommended) or any other integrated development environment (IDE).
 5. Install Confluent-Kafka packages for Python as follows. 
@@ -23,7 +23,7 @@ You can install it globally, or within a [virtualenv](https://docs.python.org/3/
 
 ## Producing messages to OSS
 1. Open your favorite editor, such as [Visual Studio Code](https://code.visualstudio.com) from the directory *wd*. You should already have oci-sdk packages for Python installed for your current python environment (as per the *step 5 of Prerequisites* section).
-2. Create new file named *Producer.py* in this directory and paste the following code in it.
+2. Create new file named *Producer.py* in this directory and paste the following code in it. You also need to replace after you replace values of config variables in the map `conf` and the name of topic is the name of stream you created. You should already have all the Kafka config info and topic name(stream name) from the step 2 of the Prerequisites section of this tutorial.
 ```Python
  
 from confluent_kafka import Producer, KafkaError  
@@ -86,8 +86,9 @@ python Producer.py
  
  You can produce multiple test messages by clicking *Produce* button back to back, as shown below
 ![Produce multiple test message by clicking Produce button](https://github.com/mayur-oci/OssJs/blob/main/JavaScript/ActualProduceMessagePopUp.png?raw=true)
-2. Open your favorite editor, such as [Visual Studio Code](https://code.visualstudio.com) from the directory *wd*. You should already have oci-sdk packages for Python installed for your current python environment as per the *step 5 of Prerequisites* section).
-3. Create new file named *Consumer.py* in this directory and paste the following code in it.
+2. Open your favorite editor, such as [Visual Studio Code](https://code.visualstudio.com) from the directory *wd*. You should already have *confluent-kafka* packages for Python installed for your current python environment as per the *step 5 of Prerequisites* section).
+
+3. Create new file named *Consumer.py* in this directory and paste the following code in it. You also need to replace after you replace values of config variables in the map `conf` and the name of topic is the name of stream you created. You should already have all the Kafka config info and topic name(stream name) from the step 2 of the Prerequisites section of this tutorial.
 ```Python
 
 from confluent_kafka import Consumer
