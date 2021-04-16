@@ -33,45 +33,45 @@ if __name__ == '__main__':
     # Read arguments and configurations and initialize  
   topic = "[YOUR_STREAM_NAME]"  
   conf = {  
-  'bootstrap.servers': "[end point of the bootstrap servers]", #usually of the form cell-1.streaming.[region code].oci.oraclecloud.com:9092  
-  'security.protocol': 'SASL_SSL',  
+    'bootstrap.servers': "[end point of the bootstrap servers]", #usually of the form cell-1.streaming.[region code].oci.oraclecloud.com:9092  
+    'security.protocol': 'SASL_SSL',  
   
-  'ssl.ca.location': '/path/on/your/host/to/your/cert.pem/'  # from step 6 of Prerequisites section
-    # optionally you can do 1. pip install certifi and 2. import certifi
-    # ssl.ca.location: certifi.where()
+    'ssl.ca.location': '/path/on/your/host/to/your/cert.pem/'  # from step 6 of Prerequisites section
+     # optionally you can do 1. pip install certifi and 2. import certifi
+     # ssl.ca.location: certifi.where()
   
-  'sasl.mechanism': 'PLAIN',  
-  'sasl.username': '[TENANCY_NAME]/[YOUR_OCI_USERNAME]/[OCID_FOR_STREAMPOOL]',  # from step 2 of Prerequisites section
-  'sasl.password': '[YOUR_OCI_AUTH_TOKEN]',  # from step 8 of Prerequisites section
+    'sasl.mechanism': 'PLAIN',  
+    'sasl.username': '[TENANCY_NAME]/[YOUR_OCI_USERNAME]/[OCID_FOR_STREAMPOOL]',  # from step 2 of Prerequisites section
+    'sasl.password': '[YOUR_OCI_AUTH_TOKEN]',  # from step 8 of Prerequisites section
    }  
   
-  # Create Producer instance  
-  producer = Producer(**conf)  
-  delivered_records = 0  
+   # Create Producer instance  
+   producer = Producer(**conf)  
+   delivered_records = 0  
   
-# Optional per-message on_delivery handler (triggered by poll() or flush())  
-# when a message has been successfully delivered or permanently failed delivery after retries.  def acked(err, msg):  
+  # Optional per-message on_delivery handler (triggered by poll() or flush())  
+  # when a message has been successfully delivered or permanently failed delivery after retries.  
+  def acked(err, msg):  
         global delivered_records  
         """Delivery report handler called on  
- successful or failed delivery of message """  if err is not None:  
+            successful or failed delivery of message """  
+        if err is not None:  
             print("Failed to deliver message: {}".format(err))  
         else:  
             delivered_records += 1  
-  print("Produced record to topic {} partition [{}] @ offset {}"  
-  .format(msg.topic(), msg.partition(), msg.offset()))  
-  
-  
-    for n in range(10):  
+            print("Produced record to topic {} partition [{}] @ offset {}".format(msg.topic(), msg.partition(), msg.offset()))  
+
+
+  for n in range(10):  
         record_key = "messageKey" + str(n)  
         record_value = "messageValue" + str(n)  
         print("Producing record: {}\t{}".format(record_key, record_value))  
         producer.produce(topic, key=record_key, value=record_value, on_delivery=acked)  
         # p.poll() serves delivery reports (on_delivery) from previous produce() calls.  
-  producer.poll(0)  
-  
-    producer.flush()  
-  
-    print("{} messages were produced to topic {}!".format(delivered_records, topic))
+        producer.poll(0)  
+
+  producer.flush()  
+  print("{} messages were produced to topic {}!".format(delivered_records, topic))
 ```
 3.   Run the code on the terminal(from the same directory *wd*) follows 
 ```
