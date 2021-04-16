@@ -164,3 +164,4 @@ Consumed record with key Null and value Example test message
 Please refer to
 
  1. [Github for Confluent Python SDK](https://github.com/confluentinc/confluent-kafka-python)
+ 2. [Kafka Python Client](https://docs.confluent.io/clients-confluent-kafka-python/current/overview.html#:~:text=Kafka%20Python%20Client%20Confluent%20develops%20and%20maintains%20confluent-kafka-python%2C,brokers%20%3E%3D%20v0.8%2C%20Confluent%20Cloud%20and%20Confluent%20Platform.)
