@@ -36,8 +36,8 @@ if __name__ == '__main__':
     'security.protocol': 'SASL_SSL',  
   
     'ssl.ca.location': '/path/on/your/host/to/your/cert.pem/'  # from step 6 of Prerequisites section
-     # optionally you can do 1. pip install certifi and 2. import certifi
-     # ssl.ca.location: certifi.where()
+     # optionally instead of giving path as shown above, you can do 1. pip install certifi 2. import certifi and
+     # 3. 'ssl.ca.location': certifi.where()
   
     'sasl.mechanism': 'PLAIN',  
     'sasl.username': '[TENANCY_NAME]/[YOUR_OCI_USERNAME]/[OCID_FOR_STREAMPOOL]',  # from step 2 of Prerequisites section
@@ -102,8 +102,8 @@ if __name__ == '__main__':
     'security.protocol': 'SASL_SSL',  
   
     'ssl.ca.location': '/path/on/your/host/to/your/cert.pem/'  # from step 6 of Prerequisites section
-     # optionally you can do 1. pip install certifi and 2. import certifi
-     # ssl.ca.location: certifi.where()
+     # optionally instead of giving path as shown above, you can do 1. pip install certifi 2. import certifi and
+     # 3. 'ssl.ca.location': certifi.where()
   
     'sasl.mechanism': 'PLAIN',  
     'sasl.username': '[TENANCY_NAME]/[YOUR_OCI_USERNAME]/[OCID_FOR_STREAMPOOL]',  # from step 2 of Prerequisites section
